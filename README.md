@@ -5,4 +5,4 @@ dans le terminal de l'editeur vous tappez la commend pip install -r requiement.t
 apres l'installations vous lancer le serveur avec la commande python manage.py runserver 
 pour acceder au pannel du superutilisatuer vous a aller sur la route http://localhost:8000/admin/ les identifiant sont 
 usernarme = admin
-password = admin@1010
+password = admin@1010 
