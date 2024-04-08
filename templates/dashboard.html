@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'content' %}
+<style>
+  table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+}
+</style>
+
+<main>
+    <article>
+      <section class="section food-menu" id="food-menu"  style="background-image:url(' {% static './assets/images/hero-bg.jpg' %}')">
+        <div class="container">
+
+          <p class="section-subtitle">Popular Dishes</p>
+
+          <h2 class="h2 section-title">
+            Our Delicious <span class="span">Foods</span>
+          </h2>
+
+          <p class="section-text">
+            Food is any substance consumed to provide nutritional support for an organism.
+          </p>
+
+          <ul class="fiter-list tab">
+    
+            <li>
+              <button class="filter-btn tablinks active"  onclick="openTab(event, '1')" >User Profile</button>
+            </li>   
+            <li>
+              <button class="filter-btn tablinks"  onclick="openTab(event, '2')" >Historique des plat commandé</button>
+            </li>
+            <li>
+              <button class="filter-btn tablinks"  onclick="openTab(event, '3')" >Historique des menu commandé</button>
+            </li>
+
+          </ul>
+          <div id="1" class="tabcontent" style="display: block;" >
+            <div class="" style="padding-bottom: 200px">
+            <center>
+              <form action="{% url 'edit'  %}" class="footer-form" style="width: max-content;" method="post">
+                {% csrf_token %}
+                <ul class="footer-list" style="margin-bottom: 50px;  text-align: justify;">
+          
+                  <li>
+                    <p class="footer-list-title">Profile informations</p>
+                  </li>
+        
+                  <li>
+                    <p class="footer-list-item">Username : {{request.user.username}} </p>
+                  </li>
+        
+                  <li>
+                    <p class="footer-list-item">E-mail : {% if profile.email %}
+                      {{profile.email}} 
+                      {% else  %}
+                          Not set
+                    {% endif %}</p>
+                  </li>
+                  <li>
+                    <p class="footer-list-item">Phone number : {% if profile.phone %}
+                      {{profile.phone}} 
+                      {% else  %}
+                          Not set
+                    {% endif %}</p>
+                  </li>
+        
+                  <li>
+                    <p class="footer-list-item">Address line 1 : {% if profile.address_1 %}
+                      {{profile.address_1}} 
+                      {% else  %}
+                          Not set
+                    {% endif %}</p>
+                  </li>
+                  <li>
+                    <p class="footer-list-item">Address line 2 : {% if profile.address_2 %}
+                      {{profile.address_2}} 
+                      {% else  %}
+                          Not set
+                    {% endif %}</p>
+                  </li>
+        
+                </ul>
+                <p class="footer-list-title" >Edit Profile</p>
+      
+                <div class="input-wrapper">  
+                  <input type="email" name="email" required placeholder="Email" aria-label="Email"
+                    class="input-field" value="{{profile.email}}">
+    
+                    <input type="text" name="phone" required placeholder="Phone" aria-label="Phone"
+                    class="input-field" value="{{profile.phone}}">
+                      
+                  <input type="text" name="address_line_1" required placeholder="Your Address line 1" aria-label="Your Address"
+                  class="input-field" value="{{profile.address_1}}">
+    
+                  <input type="text" name="address_line_2" required placeholder="Your Address line 2" aria-label="Your Address"
+                  class="input-field" value="{{profile.address_2}}">
+      
+                </div>
+               <center style="margin-top: 20px;">
+                <button type="submit" class="btn">Update profile</button>
+               </center>           
+              </form>
+              <center style="margin-top: 20px;">
+ 
+                <a href="{% url 'log-out'  %}"><button type="submit" class="btn btn-link">Logout</button></a>
+         
+            
+               </center>
+            </center>
+            </div>
+          </div>    
+          <div id="2" class="tabcontent" style="display: none;">
+            <div  style="padding-bottom: 200px;">
+              <center>
+                  <ul class="footer-list" style="width: max-content;">
+        
+                      <li>
+                        <p class="footer-list-title">Historique des plats</p>
+                      </li>
+                      <table>
+                        <tr>
+                          <th>Plats</th>
+                          <th>Price</th>
+                          <th>Date</th>
+                          <th>Statut</th>
+                        </tr>
+                       
+                          {% for item in plat_order %}
+                          <tr>
+                          <td>
+                        <center>
+                          <img src="{{item.plat.image.url}}" width="50" height="50" alt="">
+                        </center>
+                            {{item.plat.title}} </td>
+                          <td>{{item.plat.price}} </td>
+                          <td>{{item.date}} </td>
+                          <td>
+                            {% if item.status == 'aborted' or item.status == 'completed' %}
+                              {{ item.status }}
+                            {% else %}
+                              comming...
+                            {% endif %}
+                          </td> 
+                        
+
+                        </tr> 
+                          {% endfor %}
+                       
+                      </table>
+                    </ul>
+              </center>
+            </div>
+              </div>  
+              <div id="3" class="tabcontent" style="display: none;">
+                <div style="padding-bottom: 200px;">
+                  <center>
+                        <ul class="footer-list" style="width: max-content;">
+            
+                          <li>
+                            <p class="footer-list-title">Historique des Menu</p>
+                          </li>
+                          <table>
+                            <tr>
+                              <th>Menu</th>
+                              <th>Plats</th>
+                              <th>Price</th>
+                              <th>Date</th>
+                              <th>Statut</th>
+                            </tr>
+          
+                            {% for item in menu_order %}
+                              
+                              <tr>
+                                <td>{{item.menu.title}} </td>
+                              <td>
+                                {% for plat in plat %}
+                              {% if plat.menu.title == item.menu.title %}
+                              <center>
+                                <img src="{{plat.image.url}}" width="50" height="50" alt="">
+                              </center>
+                                  {{plat.title}}
+                              {% endif %}
+                                {% endfor %}
+                               </td>
+                              <td>{{item.menu.price}} </td>
+                              <td>{{item.date}} </td>
+                              <td>
+                                {% if item.status == 'aborted' or item.status == 'completed' %}
+                                  {{ item.status }}
+                                {% else %}
+                                  comming...
+                                {% endif %}
+                              </td> 
+                            </tr> 
+                              {% endfor %}
+                           
+                          </table>
+                        </ul>
+                  </center>
+                </div>
+                  </div>              
+        </div>
+      </section>
+    </article>  
+  </main>
+{% endblock %}

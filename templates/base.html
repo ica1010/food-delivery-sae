@@ -1,0 +1,299 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foodie - Supper delicious Burger in town!</title>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="{% static './assets/css/style.css' %}">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap-grid.css" integrity="sha512-hhSu9overYjKfSjPCtJW3688VHkfBh+W1pR5Mysll91bOJwGjYntytGTtVXb2aisFOaYXXDrO38NKXDRPJWu7A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap-grid.min.css" integrity="sha512-i1b/nzkVo97VN5WbEtaPebBG8REvjWeqNclJ6AItj7msdVcaveKrlIIByDpvjk5nwHjXkIqGZscVxOrTb9tsMA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Rubik:wght@400;500;600;700&family=Shadows+Into+Light&display=swap"
+    rel="stylesheet">
+
+  <!-- 
+    - preload images
+  -->
+  <link rel="preload" as="image" href="./assets/images/hero-banner.png" media="min-width(768px)">
+  <link rel="preload" as="image" href="./assets/images/hero-banner-bg.png" media="min-width(768px)">
+  <link rel="preload" as="image" href="./assets/images/hero-bg.jpg">
+  <style>
+.info {
+    background-color: rgb(248 213 197);
+    color: white;
+    text-align: center;
+}
+.success {
+    background-color: rgb(129 149 20);
+    color: white;
+    text-align: center;
+
+}
+.error {
+    background-color: rgb(162 25 0);
+    color: white;
+    text-align: center;
+
+}
+tabcontent.active {
+  display: block;
+}
+tbody {
+  background: white;
+  font-weight: 800;
+  color: black;
+}
+  </style>
+
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <h1>
+        <a href="/" class="logo">Foodie<span class="span">.</span></a>
+      </h1>
+
+      <nav class="navbar" data-navbar>
+        <ul class="navbar-list">
+
+          <li class="nav-item">
+            <a href="#menus" class="navbar-link" data-nav-link>Menus</a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#foods" class="navbar-link" data-nav-link>Foods</a>
+          </li>
+
+        </ul>
+      </nav>
+      
+      <div class="header-btn-group">
+        <button class="search-btn btn btn-hover" aria-label="Search" data-search-btn style="border-radius: 50px; padding: 13px;">
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'dashboard'  %}"><button class="btn btn-hover">Dashboard</button></a>
+        {% else  %}
+       <a href="{% url 'login'  %}">
+         <button class="btn btn-hover">Login</button>
+       </a>
+        <a href="{% url 'signup'  %}"><button class="btn btn-hover">Register</button></a>
+        {% endif %}
+        <button class="nav-toggle-btn" aria-label="Toggle Menu" data-menu-toggle-btn>
+          <span class="line top"></span>
+          <span class="line middle"></span>
+          <span class="line bottom"></span>
+        </button>
+      </div>
+    </div>
+    {% if messages %}
+    {% for message in messages %}
+    <form class="footer-form {% if message.tags %} {{ message.tags }} {% endif %}" id="alert" style="padding: 5px!important;margin-top: 50px;">
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    </form>
+    {% endfor %}
+    {% endif %}
+  </header>
+
+
+  <!-- 
+    - #SEARCH BOX
+  -->
+
+  <div class="search-container" data-search-container>
+
+    <div class="search-box">
+<form action="{% url 'search'  %}" method="get">
+  <input type="search" name="q" aria-label="Search here" placeholder="Type keywords here..."
+  class="search-input">
+
+<button class="search-submit" aria-label="Submit search" data-search-submit-btn>
+  <ion-icon name="search-outline"></ion-icon>
+</button>
+</form>
+    </div>
+
+    <button class="search-close-btn" aria-label="Cancel search" data-search-close-btn></button>
+
+  </div>
+
+
+
+{% block 'content' %}
+
+{% endblock %}
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+
+    <div class="footer-top" style="background-image: url('./assets/images/footer-illustration.png')">
+      <div class="container">
+
+        <div class="footer-brand">
+
+          <a href="" class="logo">Foodie<span class="span">.</span></a>
+
+          <p class="footer-text">
+            Financial experts support or help you to to find out which way you can raise your funds more.
+          </p>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-twitter"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-instagram"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-pinterest"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <ul class="footer-list">
+
+          <li>
+            <p class="footer-list-title">Contact Info</p>
+          </li>
+
+          <li>
+            <p class="footer-list-item">+228 98968587</p>
+          </li>
+
+          <li>
+            <p class="footer-list-item">Info@YourGmail24.com</p>
+          </li>
+
+          <li>
+            <address class="footer-list-item">Bé Pkota , Lomé togo</address>
+          </li>
+
+        </ul>
+
+        <ul class="footer-list">
+
+          <li>
+            <p class="footer-list-title">Opening Hours</p>
+          </li>
+
+          <li>
+            <p class="footer-list-item">Monday-Friday: 08:00-22:00</p>
+          </li>
+
+          <li>
+            <p class="footer-list-item">Tuesday 4PM: Till Mid Night</p>
+          </li>
+
+          <li>
+            <p class="footer-list-item">Saturday: 10:00-16:00</p>
+          </li>
+
+        </ul>
+
+      </div>
+    </div>
+
+  </footer>
+
+
+
+
+
+  <!-- 
+    - #BACK TO TOP
+  -->
+
+  <a href="#top" class="back-top-btn" aria-label="Back to top" data-back-top-btn>
+    <ion-icon name="chevron-up"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="{% static './assets/js/script.js' %}" defer></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+<script>
+  function openTab(evt, TabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(TabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  // Cacher l'alerte après 5 secondes
+  setTimeout(function() {
+    $('#alert').fadeOut();
+  }, 2000); // 5000 millisecondes = 5 secondes
+});
+</script>
+</html>

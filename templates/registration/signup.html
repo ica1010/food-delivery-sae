@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% load static %} {% block 'content' %}
+<style>
+  input{
+    color: var(--spanish-gray) !important;
+    font-size: var(--fs-4) !important;
+    border: 1px solid var(--cultured) !important;
+    padding: 8px 12px  !important;
+    margin: 15px 0px;
+  }
+</style>
+<main>
+  <article>
+    <section class="section food-menu" id="food-menu"  style="background-image:url(' {% static './assets/images/hero-bg.jpg' %}')">
+      <div class="container">
+
+        <p class="section-subtitle">Popular Dishes</p>
+
+        <h2 class="h2 section-title">
+          Our Delicious <span class="span">Foods</span>
+        </h2>
+
+        <p class="section-text">
+          Food is any substance consumed to provide nutritional support for an organism.
+        </p>
+        <div id="1" class="tabcontent" style="display: block;" >
+          <div class="" style="padding-bottom: 200px">
+          <center>
+            <form method="post" action="{% url 'signup' %}" class="footer-form" style="width: max-content;text-align: start;">
+              {% csrf_token %}
+
+              <p class="footer-list-title" >Registry</p>
+
+              <div class="">  
+                {% for field in form %}
+                <p>
+                  {{ field.label_tag }}<br>
+                  {{ field }}
+                  {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                  {% endif %}
+                  {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                  {% endfor %}
+                </p>
+              {% endfor %}
+              </div>
+              <a href="{% url 'login' %}" style="text-decoration: underline;color: var(--deep-saffron);">Login</a>
+             <center style="margin-top: 20px;">
+              <button type="submit" class="btn">Registry</button>
+             </center>
+         
+            </form>
+          </center>
+          </div>
+        </div>                
+      </div>
+    </section>
+  </article>
+</main>
+{% endblock %}
